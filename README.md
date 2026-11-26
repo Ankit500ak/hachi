@@ -210,9 +210,14 @@ Full reference: [docs/guides/](docs/guides/) — configuration, memory, cookbook
 | **Memory writes** | Untrusted content is quarantined and needs approval before entering long-term storage. |
 | **CI** | `security-audit` + `pip-audit` gate pull requests; `bandit` runs advisory. |
 
-> **Known gap:** CI does not yet scan the tracked tree for committed secrets —
-> `security-audit` inspects the environment and resolved config, not files. Tracked as a
-> release blocker.
+> **Tree secret scan:** the audit's checks inspect the environment and resolved config,
+> and CI additionally runs `security-audit --scan-tree`, which scans every git-tracked
+> file for committed credentials (PRODUCT-AUDIT P-30, closed). Deliberate test fixtures
+> are allowlisted per occurrence — path + kind + a fingerprint of the fixture value —
+> in `.secret-scan-allowlist`, so a different credential of the same kind in the same
+> file still trips the gate. Scope: the scan covers the current tracked tree only; a
+> secret that was committed and later removed remains in git history and is not
+> detected — history scanning is future work.
 
 Vulnerability disclosure: [SECURITY.md](SECURITY.md) · Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
