@@ -63,6 +63,7 @@ jobs:
     env:
       GOOGLE_CLIENT_ID: ci-posture-placeholder.apps.googleusercontent.com
       HACHI_REST_ALLOWLIST: api.example.com
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
